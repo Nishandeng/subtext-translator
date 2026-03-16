@@ -1,26 +1,206 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F3E5F5;
+  --foreground: #4A4A4A;
+  --morandi-purple: #B8A9C9;
+  --morandi-pink: #D4A5A5;
+  --morandi-blue: #A5B8D4;
+  --morandi-green: #A5D4B8;
+  --morandi-cream: #F5F0E8;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-morandi-purple: var(--morandi-purple);
+  --color-morandi-pink: var(--morandi-pink);
+  --color-morandi-blue: var(--morandi-blue);
+  --color-morandi-green: var(--morandi-green);
+  --color-morandi-cream: var(--morandi-cream);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+/* 自定义动画 */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(1.3); opacity: 0; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes text-slide {
+  0%, 20% { opacity: 0; transform: translateY(10px); }
+  25%, 45% { opacity: 1; transform: translateY(0); }
+  50%, 100% { opacity: 0; transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s ease-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* 解锁仪式感动画 */
+@keyframes scan-beam {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(100vh); opacity: 0; }
+}
+
+@keyframes decrypt-shine {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes breathe {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.02); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(212, 165, 165, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(212, 165, 165, 0.8), 0 0 40px rgba(212, 165, 165, 0.4); }
+}
+
+@keyframes folder-open {
+  0% { transform: scaleY(0.1); opacity: 0; }
+  50% { transform: scaleY(1.1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
+.animate-scan-beam {
+  animation: scan-beam 2s ease-in-out;
+}
+
+.animate-decrypt-shine {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.8) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: decrypt-shine 1.5s ease-in-out;
+}
+
+.animate-breathe {
+  animation: breathe 2s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* 支付按钮：呼吸缩放 + 高光扫过 */
+@keyframes btn-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.025); }
+}
+
+@keyframes shine-sweep {
+  0%   { left: -100%; opacity: 0; }
+  20%  { opacity: 1; }
+  80%  { opacity: 1; }
+  100% { left: 160%; opacity: 0; }
+}
+
+.animate-btn-breathe {
+  animation: btn-breathe 2.8s ease-in-out infinite;
+}
+
+.btn-shine {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-shine::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    transparent 100%
+  );
+  animation: shine-sweep 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.animate-folder-open {
+  animation: folder-open 0.6s ease-out forwards;
+  transform-origin: top center;
+}
+
+/* 打字机效果 */
+.typewriter-text {
+  overflow: hidden;
+  white-space: nowrap;
+  border-right: 2px solid #D4A5A5;
+  animation: typewriter 0.5s steps(20) forwards, blink-caret 0.75s step-end infinite;
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent; }
+  50% { border-color: #D4A5A5; }
+}
+
+/* 模糊过渡效果 */
+.blur-reveal {
+  filter: blur(10px);
+  transition: filter 0.8s ease-out;
+}
+
+.blur-reveal.revealed {
+  filter: blur(0);
+}
+
+/* 灰阶到彩色过渡 */
+.grayscale-transition {
+  filter: grayscale(100%);
+  transition: filter 1s ease-out;
+}
+
+.grayscale-transition.colored {
+  filter: grayscale(0%);
 }

@@ -1,0 +1,22 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: subtext-translator:latest
+    container_name: subtext-translator
+    restart: unless-stopped
+    ports:
+      - "3003:3000"
+    environment:
+      # 运行时注入 API Key，优先读取 .env.local，没有则从此处传入
+      - DASHSCOPE_API_KEY=${DASHSCOPE_API_KEY}
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+    # 健康检查：每 30 秒探测一次首页
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
