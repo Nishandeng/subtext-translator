@@ -2,7 +2,6 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
 import { Sparkles, Crown, Lock, AlertTriangle, FileText, Unlock, Heart, Scale, UserX, MessageSquare, BookOpen, Zap, Shield, Target, AlertCircle } from "lucide-react";
 import { AnalysisResult } from "../api/analyze/route";
 import {
@@ -17,9 +16,8 @@ import {
 import { Radar } from 'react-chartjs-2';
 
 // 强制客户端渲染，禁用静态生成
-export const dynamicConfig = {
-  dynamic: 'force-dynamic',
-};
+export const dynamic = 'force-dynamic';
+export const dynamicParams = true;
 
 // 注册 Chart.js 组件
 ChartJS.register(
@@ -264,6 +262,7 @@ function ResultContent() {
   const [showUnlockCeremony, setShowUnlockCeremony] = useState(false);
   const [revealedItems, setRevealedItems] = useState<Set<number>>(new Set());
   const [isRadarColored, setIsRadarColored] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // 从 URL 参数获取分析结果
   useEffect(() => {
@@ -276,8 +275,22 @@ function ResultContent() {
         console.error('解析分析结果失败:', e);
       }
     }
+    setIsLoading(false);
   }, [searchParams]);
 
+  // 加载中状态
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-[#F3E5F5] via-[#EDE7F6] to-[#E8EAF6] flex items-center justify-center">
+        <div className="text-center">
+          <Sparkles className="w-8 h-8 text-[#B8A9C9] animate-pulse mx-auto" />
+          <p className="text-[#7A6A8A] mt-2 text-sm">加载中...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // 无数据状态
   if (!analysisResult) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-[#F3E5F5] via-[#EDE7F6] to-[#E8EAF6] flex items-center justify-center">
