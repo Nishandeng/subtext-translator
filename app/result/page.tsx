@@ -333,7 +333,7 @@ function ResultContent() {
       </header>
 
       {/* 可滚动内容区域 */}
-      <main className="relative pt-24 pb-8 px-4">
+      <main className="relative pt-24 pb-24 px-4">
         <div className="max-w-sm mx-auto space-y-5">
           {/* 报告卡片 */}
           <div className="bg-white rounded-[28px] shadow-xl shadow-[#B8A9C9]/10 overflow-hidden">
@@ -350,7 +350,7 @@ function ResultContent() {
               </div>
             </div>
 
-            <div className="p-5">
+            <div className="p-5 pb-8">
               {/* 扎心总结 */}
               <div className="text-center mb-5">
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#D4A5A5]/10 mb-3">
@@ -413,23 +413,23 @@ function ResultContent() {
                           className="relative bg-white rounded-xl border border-[#E8E0E8] overflow-hidden"
                         >
                           {/* 左右对照布局 */}
-                          <div className="grid grid-cols-2 divide-x divide-[#E8E0E8]">
+                          <div className="grid grid-cols-2 divide-x divide-[#E8E0E8] items-stretch">
                             {/* 左边：他说的 - 始终可见 */}
-                            <div className="p-3 bg-[#FAFAFA]">
+                            <div className="p-3 bg-[#FAFAFA] flex flex-col">
                               <div className="flex items-center gap-1.5 mb-1.5">
                                 <span className="text-[10px] font-medium text-[#9A9A9A] bg-[#E8E0E8] px-1.5 py-0.5 rounded">他说的</span>
                               </div>
-                              <p className="text-sm text-[#4A4A4A] leading-relaxed">
+                              <p className="text-sm text-[#4A4A4A] leading-relaxed flex-1">
                                 {item.original_text}
                               </p>
                             </div>
                             
                             {/* 右边：实际上 - 第3条起模糊 */}
-                            <div className="p-3 bg-gradient-to-br from-[#FFF5F5] to-[#FFF0F5] relative">
+                            <div className="p-3 bg-gradient-to-br from-[#FFF5F5] to-[#FFF0F5] relative flex flex-col">
                               <div className="flex items-center gap-1.5 mb-1.5">
                                 <span className="text-[10px] font-medium text-white bg-[#D4A5A5] px-1.5 py-0.5 rounded">实际上</span>
                               </div>
-                              <p className={`text-sm text-[#8B4A4A] font-medium leading-relaxed italic transition-all duration-800 ${isLocked && !isRevealed ? 'blur-[10px] opacity-50' : 'blur-0 opacity-100'}`}>
+                              <p className={`text-sm text-[#8B4A4A] font-medium leading-relaxed italic transition-all duration-800 flex-1 ${isLocked && !isRevealed ? 'blur-[10px] opacity-50' : 'blur-0 opacity-100'}`}>
                                 {isRevealed ? (
                                   <TypewriterText 
                                     text={item.subtext_translation} 
