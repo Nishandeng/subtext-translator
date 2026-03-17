@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useRouter } from "next/navigation";
-import { Sparkles, Crown, Lock, AlertTriangle, FileText, Unlock, AlertCircle, ChevronLeft } from "lucide-react";
+import { Sparkles, Crown, Lock, AlertTriangle, FileText, Unlock, AlertCircle, ChevronLeft, Heart, Scale, UserX, MessageSquare, BookOpen, Zap, Shield, Target } from "lucide-react";
 import { AnalysisResult } from "../api/analyze/route";
 import {
   Chart as ChartJS,
@@ -24,6 +24,218 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+// ==================== 深度心理学组件 ====================
+
+// 依恋人格分析卡片
+function AttachmentCard({ profile }: { profile: AnalysisResult['psychological_profile'] }) {
+  const getAttachmentColor = (type: string) => {
+    const colors: Record<string, string> = {
+      '焦虑型': '#D4A5A5',
+      '回避型': '#A5B8D4',
+      '安全型': '#A5D4B8',
+      '恐惧型': '#B8A9C9',
+    };
+    return colors[type] || '#B8A9C9';
+  };
+
+  const color = getAttachmentColor(profile.attachment_type);
+
+  return (
+    <div className="bg-gradient-to-br from-[#F8F5FA] to-[#FDF8F8] rounded-2xl p-4 mb-4">
+      <div className="flex items-center gap-2 mb-3">
+        <Heart className="w-4 h-4" style={{ color }} />
+        <h3 className="text-xs font-semibold text-[#5A5A5A]">依恋人格画像</h3>
+      </div>
+      
+      <div className="flex items-center gap-3 mb-3">
+        <div 
+          className="w-12 h-12 rounded-full flex items-center justify-center text-white text-lg font-bold"
+          style={{ backgroundColor: color }}
+        >
+          {profile.attachment_type.charAt(0)}
+        </div>
+        <div>
+          <p className="text-sm font-bold text-[#4A4A4A]">{profile.attachment_type}</p>
+          <p className="text-[10px] text-[#7A7A7A]">{profile.type_description}</p>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <div className="bg-white/60 rounded-lg p-2.5">
+          <p className="text-[10px] text-[#9A7A8A] mb-1">典型行为模式</p>
+          <ul className="text-xs text-[#5A4A5A] space-y-1">
+            {profile.behavioral_patterns.map((pattern, i) => (
+              <li key={i}>• {pattern}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="bg-white/60 rounded-lg p-2.5">
+          <p className="text-[10px] text-[#9A7A8A] mb-1">压力反应</p>
+          <p className="text-xs text-[#5A4A5A]">{profile.stress_response}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 权力动态分析
+function PowerDynamics({ dynamics }: { dynamics: AnalysisResult['power_dynamics'] }) {
+  const getPowerColor = (position: string) => {
+    const colors: Record<string, string> = {
+      '高位': '#D4A5A5',
+      '低位': '#A5B8D4',
+      '平衡': '#B8A9C9',
+    };
+    return colors[position] || '#B8A9C9';
+  };
+
+  return (
+    <div className="bg-gradient-to-br from-[#F5F8FA] to-[#F8F5FA] rounded-2xl p-4 mb-4">
+      <div className="flex items-center gap-2 mb-3">
+        <Scale className="w-4 h-4 text-[#A5B8D4]" />
+        <h3 className="text-xs font-semibold text-[#5A5A5A]">权力动态分析</h3>
+      </div>
+
+      <div className="space-y-2 mb-3">
+        <div className="flex items-center justify-between p-2 bg-white/60 rounded-lg">
+          <span className="text-xs text-[#7A7A7A]">情感投资比</span>
+          <span className="text-xs font-bold text-[#5A5A5A]">{dynamics.investment_ratio}</span>
+        </div>
+        <div className="flex items-center justify-between p-2 bg-white/60 rounded-lg">
+          <span className="text-xs text-[#7A7A7A]">权力位置</span>
+          <span className="text-xs font-bold" style={{ color: getPowerColor(dynamics.power_position) }}>{dynamics.power_position}</span>
+        </div>
+        <div className="flex items-center justify-between p-2 bg-white/60 rounded-lg">
+          <span className="text-xs text-[#7A7A7A]">沟通能耗</span>
+          <span className="text-xs font-bold text-[#5A5A5A]">{dynamics.communication_cost}</span>
+        </div>
+      </div>
+
+      <div className="bg-white/60 rounded-lg p-2.5">
+        <p className="text-[10px] text-[#9A7A8A] mb-1">框架控制技巧</p>
+        <ul className="text-xs text-[#5A4A5A] space-y-1">
+          {dynamics.control_tactics.map((tactic, i) => (
+            <li key={i}>• {tactic}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+// 用户审计
+function UserAudit({ audit }: { audit: AnalysisResult['user_audit'] }) {
+  return (
+    <div className="bg-gradient-to-br from-[#FAF8F5] to-[#FDF8F8] rounded-2xl p-4 mb-4">
+      <div className="flex items-center gap-2 mb-3">
+        <UserX className="w-4 h-4 text-[#D4A5A5]" />
+        <h3 className="text-xs font-semibold text-[#5A5A5A]">你的情感盲区</h3>
+      </div>
+
+      <div className="space-y-2">
+        <div className="bg-white/60 rounded-lg p-2.5">
+          <p className="text-[10px] text-[#9A7A8A] mb-1">认知偏差</p>
+          <p className="text-xs text-[#5A4A5A]">{audit.cognitive_bias}</p>
+        </div>
+        <div className="bg-white/60 rounded-lg p-2.5">
+          <p className="text-[10px] text-[#9A7A8A] mb-1">情绪索取行为</p>
+          <ul className="text-xs text-[#5A4A5A] space-y-1">
+            {audit.emotional_demands.map((demand, i) => (
+              <li key={i}>• {demand}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="bg-white/60 rounded-lg p-2.5">
+          <p className="text-[10px] text-[#9A7A8A] mb-1">自我价值投射</p>
+          <p className="text-xs text-[#5A4A5A]">{audit.self_value_projection}</p>
+        </div>
+        <div className="bg-white/60 rounded-lg p-2.5">
+          <p className="text-[10px] text-[#9A7A8A] mb-1">改进建议</p>
+          <ul className="text-xs text-[#5A4A5A] space-y-1">
+            {audit.improvement_suggestions.map((suggestion, i) => (
+              <li key={i}>• {suggestion}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// 神回复剧本
+function ScriptDeck({ scripts }: { scripts: AnalysisResult['reply_scripts'] }) {
+  const [expandedKey, setExpandedKey] = useState<string | null>(null);
+
+  const scriptList = [
+    { key: 'provocative', label: '拉扯反击版' },
+    { key: 'graceful', label: '体面退场版' },
+    { key: 'honest', label: '开诚布公版' },
+  ] as const;
+
+  return (
+    <div className="bg-gradient-to-br from-[#F5FAF8] to-[#F8FAF5] rounded-2xl p-4 mb-4">
+      <div className="flex items-center gap-2 mb-3">
+        <MessageSquare className="w-4 h-4 text-[#A5D4B8]" />
+        <h3 className="text-xs font-semibold text-[#5A5A5A]">神回复剧本</h3>
+      </div>
+
+      <div className="space-y-2">
+        {scriptList.map(({ key, label }) => {
+          const script = scripts[key];
+          return (
+            <div 
+              key={key}
+              className="bg-white/60 rounded-lg overflow-hidden cursor-pointer transition-all"
+              onClick={() => setExpandedKey(expandedKey === key ? null : key)}
+            >
+              <div className="p-2.5 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] text-white bg-[#A5D4B8] px-1.5 py-0.5 rounded">{label}</span>
+                  <span className="text-xs text-[#5A5A5A]">{script.description}</span>
+                </div>
+                <span className="text-[10px] text-[#9A9A9A]">{expandedKey === key ? '收起' : '展开'}</span>
+              </div>
+              
+              {expandedKey === key && (
+                <div className="px-2.5 pb-2.5 space-y-2 border-t border-[#E8E0E8] pt-2">
+                  <div className="bg-[#A5D4B8]/10 rounded p-2">
+                    <p className="text-[10px] text-[#5A8A6A] mb-0.5">回复话术</p>
+                    <p className="text-xs text-[#4A6A5A] font-medium">"{script.script}"</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-[#9A7A8A] mb-0.5">心理学原理</p>
+                    <p className="text-xs text-[#5A4A5A]">{script.psychology_tip}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// 法官低语
+function JudgeWhisper({ whisper }: { whisper: AnalysisResult['judges_whisper'] }) {
+  return (
+    <div className="bg-gradient-to-br from-[#2D2A3E] to-[#3D3850] rounded-2xl p-4 text-white">
+      <div className="flex items-center gap-2 mb-3">
+        <BookOpen className="w-4 h-4 text-[#D4A5A5]" />
+        <h3 className="text-xs font-semibold text-white/90">法官的治愈寄语</h3>
+      </div>
+
+      <div className="bg-white/10 rounded-lg p-4">
+        <p className="text-xs text-white/90 leading-relaxed italic">
+          "{whisper}"
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// ==================== 原有组件 ====================
 
 // 解锁仪式感动画组件
 function UnlockCeremony({ onComplete }: { onComplete: () => void }) {
@@ -483,6 +695,26 @@ function ResultContent() {
               )}
             </div>
           </div>
+
+          {/* ===== 付费解锁后的深度心理学内容 ===== */}
+          {isUnlocked && (
+            <>
+              {/* 依恋人格分析 */}
+              <AttachmentCard profile={analysisResult.psychological_profile} />
+
+              {/* 权力动态分析 */}
+              <PowerDynamics dynamics={analysisResult.power_dynamics} />
+
+              {/* 用户审计 */}
+              <UserAudit audit={analysisResult.user_audit} />
+
+              {/* 神回复剧本 */}
+              <ScriptDeck scripts={analysisResult.reply_scripts} />
+
+              {/* 法官低语 */}
+              <JudgeWhisper whisper={analysisResult.judges_whisper} />
+            </>
+          )}
         </div>
       </main>
 
@@ -509,11 +741,11 @@ function ResultContent() {
                 </div>
                 <div className="flex items-center gap-2 text-sm text-[#5A5A5A]">
                   <span className="text-green-500">✓</span>
-                  <span>红旗/绿旗信号详细解读</span>
+                  <span>依恋人格 · 权力动态 · 情感盲区</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm text-[#5A5A5A]">
                   <span className="text-green-500">✓</span>
-                  <span>闺蜜专属行动建议</span>
+                  <span>神回复剧本 · 法官判决书</span>
                 </div>
               </div>
 
