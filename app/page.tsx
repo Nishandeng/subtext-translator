@@ -126,9 +126,9 @@ export default function Home() {
         throw new Error(data.error || "分析失败，请稍后重试");
       }
 
-      // 跳转到结果页，传递分析数据
-      const encodedData = encodeURIComponent(JSON.stringify(data));
-      router.push(`/result?data=${encodedData}`);
+      // 存储分析结果到 localStorage，然后跳转到结果页
+      localStorage.setItem('analysisResult', JSON.stringify(data));
+      router.push('/result');
     } catch (err) {
       console.error("分析错误:", err);
       setError(err instanceof Error ? err.message : "分析失败，请稍后重试");

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Sparkles, Crown, Lock, AlertTriangle, FileText, Unlock, Heart, Scale, UserX, MessageSquare, BookOpen, Zap, Shield, Target, AlertCircle } from "lucide-react";
 import { AnalysisResult } from "../api/analyze/route";
 import {
@@ -14,10 +14,6 @@ import {
   Legend,
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
-
-// 强制客户端渲染，禁用静态生成
-export const dynamic = 'force-dynamic';
-export const dynamicParams = true;
 
 // 注册 Chart.js 组件
 ChartJS.register(
@@ -255,7 +251,6 @@ const radarOptions = {
 // 结果页面内容组件
 function ResultContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [analysisResult, setAnalysisResult] = useState<AnalysisResult | null>(null);
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -264,19 +259,21 @@ function ResultContent() {
   const [isRadarColored, setIsRadarColored] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 从 URL 参数获取分析结果
+  // 从 localStorage 获取分析结果
   useEffect(() => {
-    const data = searchParams.get('data');
-    if (data) {
-      try {
-        const parsed = JSON.parse(decodeURIComponent(data));
+    try {
+      const data = localStorage.getItem('analysisResult');
+      if (data) {
+        const parsed = JSON.parse(data);
         setAnalysisResult(parsed);
-      } catch (e) {
-        console.error('解析分析结果失败:', e);
+        // 读取后清除，避免刷新页面后还能访问（可选）
+        // localStorage.removeItem('analysisResult');
       }
+    } catch (e) {
+      console.error('解析分析结果失败:', e);
     }
     setIsLoading(false);
-  }, [searchParams]);
+  }, []);
 
   // 加载中状态
   if (isLoading) {
