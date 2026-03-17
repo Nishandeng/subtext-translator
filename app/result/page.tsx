@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
 import { Sparkles, Crown, Lock, AlertTriangle, FileText, Unlock, Heart, Scale, UserX, MessageSquare, BookOpen, Zap, Shield, Target, AlertCircle } from "lucide-react";
 import { AnalysisResult } from "../api/analyze/route";
 import {
@@ -14,6 +15,11 @@ import {
   Legend,
 } from 'chart.js';
 import { Radar } from 'react-chartjs-2';
+
+// 强制客户端渲染，禁用静态生成
+export const dynamicConfig = {
+  dynamic: 'force-dynamic',
+};
 
 // 注册 Chart.js 组件
 ChartJS.register(
