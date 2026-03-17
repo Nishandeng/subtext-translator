@@ -412,24 +412,24 @@ function ResultContent() {
                           key={index}
                           className="relative bg-white rounded-xl border border-[#E8E0E8] overflow-hidden"
                         >
-                          {/* 左右对照布局 */}
-                          <div className="grid grid-cols-2 divide-x divide-[#E8E0E8] items-stretch">
+                          {/* 左右对照布局 - 使用 flex 确保高度自适应 */}
+                          <div className="flex divide-x divide-[#E8E0E8]">
                             {/* 左边：他说的 - 始终可见 */}
-                            <div className="p-3 bg-[#FAFAFA] flex flex-col">
+                            <div className="flex-1 p-3 bg-[#FAFAFA]">
                               <div className="flex items-center gap-1.5 mb-1.5">
                                 <span className="text-[10px] font-medium text-[#9A9A9A] bg-[#E8E0E8] px-1.5 py-0.5 rounded">他说的</span>
                               </div>
-                              <p className="text-sm text-[#4A4A4A] leading-relaxed flex-1">
+                              <p className="text-sm text-[#4A4A4A] leading-relaxed">
                                 {item.original_text}
                               </p>
                             </div>
                             
                             {/* 右边：实际上 - 第3条起模糊 */}
-                            <div className="p-3 bg-gradient-to-br from-[#FFF5F5] to-[#FFF0F5] relative flex flex-col">
+                            <div className="flex-1 p-3 bg-gradient-to-br from-[#FFF5F5] to-[#FFF0F5]">
                               <div className="flex items-center gap-1.5 mb-1.5">
                                 <span className="text-[10px] font-medium text-white bg-[#D4A5A5] px-1.5 py-0.5 rounded">实际上</span>
                               </div>
-                              <p className={`text-sm text-[#8B4A4A] font-medium leading-relaxed italic transition-all duration-800 flex-1 ${isLocked && !isRevealed ? 'blur-[10px] opacity-50' : 'blur-0 opacity-100'}`}>
+                              <p className={`text-sm text-[#8B4A4A] font-medium leading-relaxed italic transition-all duration-800 ${isLocked && !isRevealed ? 'blur-[10px] opacity-50' : 'blur-0 opacity-100'}`}>
                                 {isRevealed ? (
                                   <TypewriterText 
                                     text={item.subtext_translation} 
